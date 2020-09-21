@@ -12,7 +12,10 @@
   "author": "oscar martinez",
   "license": "PRIVATE",
   "dependencies": {
-    "express": "^4.17.1"
+    "-": "0.0.1",
+    "D": "^1.0.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4"
   },
   "devDependencies": {
     "cross-env": "^7.0.2",
