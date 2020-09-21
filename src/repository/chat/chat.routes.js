@@ -4,7 +4,7 @@ const ChatRepository = require('./chat.repository')
 module.exports = function (router){
     const chatRepo = ChatRepository(/*dbContext*/)
 
-    router.route('/chat')
+    router.route('/chats')
     .get(chatRepo.test)
 
     //router.route('/chat/enviar')
