@@ -1,11 +1,11 @@
 const UserRepository = require('./user.repository')
-//const dbContext = 
+const checkAuth = require('../../middleware/check-auth')
 
 module.exports = function (router){
     const userRepo = UserRepository(/*dbContext*/)
 
     router.route('/users')
-    .get(userRepo.findAll)
+    .get(checkAuth,userRepo.findAll)
 
     router.route('/users/signUp')
     .post(userRepo.signUp)
@@ -13,5 +13,4 @@ module.exports = function (router){
     router.route('/users/signIn')
     .post(userRepo.signIn)
 
-    //router.route('/chat/enviar')
 }

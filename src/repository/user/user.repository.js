@@ -1,51 +1,46 @@
 const User = require('../../model/user.model')
 const mongoose = require('mongoose')
 const encryption = require('../../lib/encryption')
-const { encrypt } = require('../../lib/encryption')
+const jwt = require('jsonwebtoken')
+const config = require('../../../config')
+const env = process.env.NODE_ENV || 'production'
 
 function UserRepository() {
-
-    function test(req, res, next) {
-        const user = new User({
-            id: 1,
-            username: 'osmartinez',
-            email: 'its.osmartinez@gmail.com',
-            password: '123123',
-            birthDate: '1996-12-08',
-            geolocation: '123.1;-12;33',
-            registerDate: '2020-09-21',
-            lastLoginDate: null,
-            isBlocked: false
-        })
-        user.save()
-    }
 
     async function findAll(req, res, next) {
         const users = await User.find()
         res.json(users)
     }
 
-    
+
     // {"username":"omartinez@test.com","password":"123123"}
-    async function signIn(req,res,next){
-        const { username, password} = req.body
+    async function signIn(req, res, next) {
+        const { username, password } = req.body
         console.log(req.body)
         try {
-            const user = await User.findOne({username: username})
-            if(user != null){
-                const resultMatch = await encryption.match(plainPassword=password, hash=user.password)
-                if(resultMatch){
+            const user = await User.findOne({ username: username })
+            if (user != null) {
+                const resultMatch = await encryption.match(plainPassword = password, hash = user.password)
+                if (resultMatch) {
+                    const token = jwt.sign({
+                        email: user.email,
+                        userId: user._id,
+                    }, config[env].server.JWT_KEY,
+                        {
+                            expiresIn: "1h",
+                        })
                     // user found && correct pwd
                     res.status(200).json({
-                        message: 'Auth succesful'
+                        message: 'Auth succesful',
+                        token: token,
                     })
                 }
-                else{
+                else {
                     // incorrect pwd
                     res.sendStatus(401)
                 }
             }
-            else{
+            else {
                 // user not found
                 res.sendStatus(401)
             }
@@ -80,7 +75,6 @@ function UserRepository() {
     }
 
     return {
-        test,
         findAll,
         signUp,
         signIn,
