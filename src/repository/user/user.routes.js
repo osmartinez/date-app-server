@@ -7,5 +7,11 @@ module.exports = function (router){
     router.route('/users')
     .get(userRepo.findAll)
 
+    router.route('/users/signUp')
+    .post(userRepo.signUp)
+
+    router.route('/users/signIn')
+    .post(userRepo.signIn)
+
     //router.route('/chat/enviar')
 }
