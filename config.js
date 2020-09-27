@@ -1,7 +1,7 @@
 module.exports = {
     development:{
         database:{
-            name: 'test',
+            name: 'dev',
             host: 'localhost',
             port: 27017,
         },
@@ -18,5 +18,13 @@ module.exports = {
             port: 3000,
             JWT_KEY: "@1@2@3XYZwt-TaB921@",
         }
+    },
+    test:{
+        database:{
+            name:'test',
+            host: 'localhost',
+            port: 27017,
+        },
+        
     }
 }
